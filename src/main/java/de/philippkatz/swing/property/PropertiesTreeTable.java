@@ -160,11 +160,20 @@ public final class PropertiesTreeTable extends JXTreeTable {
 		editingClass = null;
 		int modelColumn = convertColumnIndexToModel(column);
 		if (modelColumn == 2) {
-			editingClass = getModel().getValueAt(row, modelColumn).getClass();
+			extractDataColumnClass(row, modelColumn);
 			return getDefaultRenderer(editingClass);
 		} else {
 			return super.getCellRenderer(row, column);
 		}
+	}
+
+	private void extractDataColumnClass(int row, int modelColumn) {
+		Object valueAt = getModel().getValueAt(row, modelColumn);
+		if ( valueAt != null )
+			editingClass = valueAt.getClass();
+		else if ( getModel().getValueAt(row, 1) instanceof PropertyType)
+			editingClass =  ((PropertyType)getModel().getValueAt(row, 1)).getType();
+		else editingClass = String.class;
 	}
 
 	@Override
@@ -178,7 +187,7 @@ public final class PropertiesTreeTable extends JXTreeTable {
 			JTree tree = (JTree) getCellRenderer(0, getHierarchicalColumn());
 			return new UniqueKeyTreeTableCellEditor(tree, row);
 		} else if (modelColumn == 2) {
-			editingClass = getModel().getValueAt(row, modelColumn).getClass();
+			extractDataColumnClass(row, modelColumn);
 			return getDefaultEditor(editingClass);
 		} else {
 			return super.getCellEditor(row, column);
