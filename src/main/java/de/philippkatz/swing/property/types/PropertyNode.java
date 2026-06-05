@@ -61,7 +61,7 @@ public class PropertyNode extends AbstractMutableTreeTableNode {
 	 * @return <code>true</code> in case this node is contained within a list.
 	 */
 	private boolean isInList() {
-		if (getParent() == null) {
+		if (getParent() == null || !(getParent() instanceof PropertyNode)) {
 			return false;
 		} else {
 			PropertyNode parentProperty = (PropertyNode) getParent();

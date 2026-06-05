@@ -51,10 +51,8 @@ public final class PropertiesTreeTable extends JXTreeTable {
 			Component component = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			TreePath path = getPathForRow(row);
 			if (path != null) {
-				if ( path.getLastPathComponent() instanceof PropertyNode item ) {
-					if (((PropertyNode) item.getParent()).getType() instanceof ListType) {
-						component.setForeground(Color.GRAY);
-					}
+				if ( path.getLastPathComponent() instanceof PropertyNode item && (item.getParent() instanceof PropertyNode parent && parent.getType() instanceof ListType)) {
+					component.setForeground(Color.GRAY);
 				}
 			}
 			return component;
